@@ -45,5 +45,5 @@
 
 	</build>
   
-  		<version>${version}</version>
+  		<version>${bamboo.mcdatabase.version}</version>
 </project>
