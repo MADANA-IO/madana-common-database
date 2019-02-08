@@ -122,6 +122,7 @@ public abstract class MDN_A_SQLConnector
 	public static ResultSet executeQuery(String strQuery) throws SQLException
 	{
 		Statement stmt=  connection.createStatement();
+		
 		return stmt.executeQuery(strQuery);
 	}
 	

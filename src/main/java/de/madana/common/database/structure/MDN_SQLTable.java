@@ -90,27 +90,34 @@ public class MDN_SQLTable
 		strValues= strValues.substring(0, strValues.length()-2);
 		PreparedStatement oStatement = MDN_SQLConnector.connection.prepareStatement("INSERT INTO "+strName+" ("+strColumNames+")VALUES ("+strValues+")");
 
-
-		for(int i=0; i < oValues.size();i++)
+		try
 		{
-			if(oValues.get(i) instanceof byte[])
+			for(int i=0; i < oValues.size();i++)
 			{
-				oStatement.setBytes(i+1, (byte[]) oValues.get(i));
+				if(oValues.get(i) instanceof byte[])
+				{
+					oStatement.setBytes(i+1, (byte[]) oValues.get(i));
+
+				}
+				else if(oValues.get(i) instanceof java.sql.Timestamp)
+				{
+					oStatement.setTimestamp(i+1, ( java.sql.Timestamp) oValues.get(i));
+
+				}
+				else //if(oValues.get(i) instanceof String)
+				{
+					oStatement.setString(i+1,  (String) oValues.get(i));
+				}
 
 			}
-			else if(oValues.get(i) instanceof java.sql.Timestamp)
-			{
-				oStatement.setTimestamp(i+1, ( java.sql.Timestamp) oValues.get(i));
 
-			}
-			else //if(oValues.get(i) instanceof String)
-			{
-				oStatement.setString(i+1,  (String) oValues.get(i));
-			}
-
+		 oStatement.executeUpdate();
+		}
+		finally
+		{
+			oStatement.close();
 		}
 
-	 oStatement.executeUpdate();
 	}
 	/**
 	 * Löscht den Eintrag mit der ID aus der Tablle
@@ -133,6 +140,7 @@ public class MDN_SQLTable
 		PreparedStatement oStatement = MDN_SQLConnector.connection.prepareStatement("UPDATE "+strName+" set "+strColumn+" =? where id ="+strUserID);
 		oStatement.setBytes(1, bBytes);
 		oStatement.executeUpdate();
+		oStatement.close();
 
 	}
 	/**
@@ -150,6 +158,7 @@ public class MDN_SQLTable
 		ResultSet oSet=	 MDN_SQLConnector.executeQuery("SELECT * FROM "+strName+ " WHERE "+strColumName+" = '"+ strValue+"'");
 		if(oSet.next())
 			strId=oSet.getString(1);
+		oSet.close();
 		return strId;
 	}
 	public Object getEntryByKey(String strKeyColumn, String strKey, String strColumn) throws SQLException
@@ -163,7 +172,9 @@ public class MDN_SQLTable
 			return oBlob.getBytes(1L, (int)oBlob.length());
 		}
 		oSet.next();
-		return oSet.getString(oSet.findColumn(strColumn));
+		String entry = oSet.getString(oSet.findColumn(strColumn));
+		oSet.close();
+		return entry;
 	}
 	/**
 	 * Gibt die Einträge zurück die in der übergebenen Spalte die entsprechenden Werte haben
@@ -180,6 +191,7 @@ public class MDN_SQLTable
 		ResultSet oSet=	 MDN_SQLConnector.executeQuery("SELECT * FROM "+strName+ " WHERE "+strColumName+" = '"+ strValue+"'");
 		while(oSet.next())
 			oValues.add(oSet.getString(1));
+		oSet.close();
 		return oValues;
 	}
 
@@ -197,6 +209,7 @@ public class MDN_SQLTable
 		ResultSet oSet=		 MDN_SQLConnector.executeQuery("SELECT "+strColumnName+" FROM "+strName+ " WHERE "+strColumnName +" is not NULL");
 		while(oSet.next())
 			oValues.add(oSet.getString(1));
+		oSet.close();
 		return oValues;
 
 	}
@@ -212,6 +225,7 @@ public class MDN_SQLTable
 		ResultSet rs = MDN_SQLConnector.executeQuery("SELECT count(*) FROM "+strName);
 		rs.next();
 		long zeilen = rs.getLong(1);
+		rs.close();
 		return zeilen;
 	}
 	/**
@@ -227,6 +241,7 @@ public class MDN_SQLTable
 		ResultSet oSet=		 MDN_SQLConnector.executeQuery("SELECT COLUMN_NAME,REFERENCED_TABLE_NAME,REFERENCED_COLUMN_NAME from INFORMATION_SCHEMA.KEY_COLUMN_USAGE where TABLE_SCHEMA = '"+MDN_SQLConnector.DATABASE_NAME+"' and TABLE_NAME = '"+strName+"'and referenced_column_name is not NULL;");
 		while(oSet.next())
 			oForeignKeys.add(new MDN_SQLForeignKey(strName,oSet));
+		oSet.close();
 		return oForeignKeys;
 	}
 	/**
@@ -253,12 +268,13 @@ public class MDN_SQLTable
 	public List<String> getColumnNames() throws SQLException
 	{
 		List<String> oColumns = new ArrayList<String>();
-		ResultSet rs = MDN_SQLConnector.executeQuery("SELECT * FROM "+strName);
+		ResultSet rs = MDN_SQLConnector.executeQuery("SELECT * FROM "+strName+"  LIMIT 0, 1");
 		ResultSetMetaData rsmd = rs.getMetaData();
 		int columnCount = rsmd.getColumnCount();
 		for (int i = 1; i <= columnCount; i++ ) {
 			oColumns.add(rsmd.getColumnName(i));
 		}
+		rs.close();
 		return oColumns;
 	}
 	/**
