@@ -4,8 +4,8 @@
 	<modelVersion>4.0.0</modelVersion>
 
   <groupId>de.madana.common</groupId>
-  <artifactId>madana-database</artifactId>
-  <name>madana-database</name>
+  <artifactId>database</artifactId>
+  <name>madana-common-database</name>
   <url>http://maven.apache.org</url>
 
 
@@ -55,4 +55,11 @@
 
 	</build>
   		<version>${bamboo.mcdatabase.version}</version>
+  			<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>GitHub MADANA-IO Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/MADANA-IO/madana-common-database</url>
+		</repository>
+	</distributionManagement>
 </project>
