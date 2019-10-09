@@ -18,7 +18,7 @@
  * @author:Jean-Fabian Wenisch
  * @contact:dev@madana.io
  ******************************************************************************/
-package de.madana.common.database.structure;
+package com.madana.common.database.structure;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

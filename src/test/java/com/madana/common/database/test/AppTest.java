@@ -18,7 +18,7 @@
  * @author:Jean-Fabian Wenisch
  * @contact:dev@madana.io
  ******************************************************************************/
-package de.madana.server.database;
+package com.madana.common.database.test;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

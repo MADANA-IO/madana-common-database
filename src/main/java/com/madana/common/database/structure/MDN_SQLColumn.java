@@ -18,7 +18,7 @@
  * @author:Jean-Fabian Wenisch
  * @contact:dev@madana.io
  ******************************************************************************/
-package de.madana.common.database.structure;
+package com.madana.common.database.structure;
 
 import java.sql.SQLException;
 import java.util.Date;
@@ -28,8 +28,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JTextField;
 
-import de.madana.common.database.MDN_SQLConnector;
-// TODO: Auto-generated Javadoc
+import com.madana.common.database.MDN_SQLConnector;
 
 /**
  * Klasse zur Verwaltung einer einzelnen Spalte aus der Datenbank

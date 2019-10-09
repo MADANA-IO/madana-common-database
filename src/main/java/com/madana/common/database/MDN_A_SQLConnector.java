@@ -18,7 +18,7 @@
  * @author:Jean-Fabian Wenisch
  * @contact:dev@madana.io
  ******************************************************************************/
-package de.madana.common.database;
+package com.madana.common.database;
 
 import java.io.IOException;
 import java.sql.Connection;

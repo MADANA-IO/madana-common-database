@@ -18,7 +18,7 @@
  * @author:Jean-Fabian Wenisch
  * @contact:dev@madana.io
  ******************************************************************************/
-package de.madana.common.database.dbms;
+package com.madana.common.database.dbms;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -28,8 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import de.madana.common.database.MDN_A_SQLConnector;
-import de.madana.common.database.MDN_SQLConnector;
+import com.madana.common.database.MDN_A_SQLConnector;
+import com.madana.common.database.MDN_SQLConnector;
 
 // TODO: Auto-generated Javadoc
 /**

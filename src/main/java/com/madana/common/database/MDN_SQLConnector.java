@@ -18,11 +18,11 @@
  * @author:Jean-Fabian Wenisch
  * @contact:dev@madana.io
  ******************************************************************************/
-package de.madana.common.database;
+package com.madana.common.database;
 
 import java.util.Properties;
 
-import de.madana.common.database.dbms.MDN_A_MySQLConnector;
+import com.madana.common.database.dbms.MDN_A_MySQLConnector;
 
 /**
  * Stellt via JDBC die Verbindung zur Datenbank her

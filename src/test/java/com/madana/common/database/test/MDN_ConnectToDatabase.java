@@ -18,11 +18,11 @@
  * @author:Jean-Fabian Wenisch
  * @contact:dev@madana.io
  ******************************************************************************/
-package de.madana.server.database;
+package com.madana.common.database.test;
 
 import java.sql.SQLException;
 
-import de.madana.common.database.MDN_SQLConnector;
+import com.madana.common.database.MDN_SQLConnector;
 
 public class MDN_ConnectToDatabase {
 
