@@ -53,7 +53,7 @@
 		</plugins>
 
 	</build>
-  		<version>${bamboo.mcdatabase.version}</version>
+  		<version>0.0.1-master.1</version>
   			<distributionManagement>
 		<repository>
 			<id>github</id>
