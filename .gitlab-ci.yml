@@ -85,7 +85,7 @@ version_tag:
   except:
     - tags
  
-package:
+deploy:
   stage: deploy
   cache:
     << : *default_cache
