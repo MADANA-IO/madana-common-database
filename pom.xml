@@ -53,7 +53,7 @@
 		</plugins>
 
 	</build>
-  		<version>0.0.1-master.1</version>
+  		<version>0.1.23-master.1</version>
   			<distributionManagement>
 		<repository>
 			<id>github</id>
