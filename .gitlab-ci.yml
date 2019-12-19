@@ -11,11 +11,6 @@ variables:
   MAVEN_CLI_OPTS: "-Dbamboo.gituser=${GITREPOUSER} -Dbamboo.gittoken=${GITREPOTOKEN} -Ddeploymenttoken=${AWS_ACCESS_KEY_ID} -Ddeploymentsecret=${AWS_SECRET_KEY} -DAWS_DEFAULT_REGION=${AWS_DEFAULT_REGION} -s src/main/resources/env.properties --batch-mode"
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
   GSG_RELEASE_BRANCHES: production
-#  S3_BUCKET: elasticbeanstalk-eu-central-1-957799606666
-#  AWS_REGION: eu-central-1
-#  APPLICATION_NAME: "MADANA RestService"
-#  ENVIRONMENT_STAGING: "MadanaRestService-staging"
-#  ENVIRONMENT_PRODUCTION: "MADANARestService-production"
 
 .default_cache: &default_cache
   key: ${CI_COMMIT_REF_SLUG}
@@ -90,27 +85,16 @@ version_tag:
   except:
     - tags
  
-.deploy:
-  image: python:alpine
+package:
   stage: deploy
-  variables:
-    GIT_STRATEGY: none
+  cache:
+    << : *default_cache
+    policy: pull
   environment:
-    name: $ENVIRONMENT_STAGING
+    name: github-registry
   script:
-    - export RELEASE_VERSION=$(cat .next-version)
-    - export WAR_FILE=$(cd target && ls madana-*-*.war)
-    - export S3_KEY=$CI_PROJECT_NAME-$RELEASE_VERSION/$WAR_FILE
-    - export AWS_ACCESS_KEY_ID=$AWS_EB_ACCESS_KEY_ID
-    - export AWS_SECRET_ACCESS_KEY=$AWS_EB_SECRET_KEY
-    - pip install awscli
-    - aws configure set aws_access_key_id $AWS_EB_ACCESS_KEY_ID
-    - aws configure set aws_secret_access_key $AWS_EB_SECRET_KEY
-    - aws configure set region $AWS_REGION
-    - aws s3 cp target/$WAR_FILE s3://$S3_BUCKET/$S3_KEY
-    - >
-      aws elasticbeanstalk create-application-version --application-name "$APPLICATION_NAME" --version-label "$RELEASE_VERSION" --source-bundle S3Bucket="$S3_BUCKET",S3Key="$S3_KEY"
-    - > 
-      aws elasticbeanstalk update-environment --application-name "$APPLICATION_NAME" --environment-name "$ENVIRONMENT_STAGING" --version-label "$RELEASE_VERSION"
+    - mvn $MAVEN_CLI_OPTS deploy
+  except:
+    - tags
   only:
     - production
